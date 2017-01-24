@@ -94,7 +94,7 @@ object Main {
     "<div class=\"panel-body\">\n" +
     "\t<label>" + label + "</label>\n" +
     "\t<div class=\"checkbox\"><label><input id=\"!!!\" name=\"" + id + " wants different\" type=\"checkbox\"\n" +
-    "\t\t/>Yes, I <i>want</i> it to produce something different.</label</div>\n</div><!-- end wanting different -->\n"
+    "\t\t/>Yes, I <i>want</i> it to produce something different.</label></div>\n</div><!-- end wanting different -->\n"
   }
 
   def stringToCheckBoxes(id: String, answerChoices: Vector[String], label: String): String = {
