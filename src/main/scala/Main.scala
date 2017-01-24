@@ -7,6 +7,11 @@ class QuestionSegment(val id: String, val answerChoices: Vector[String],
                       val text: String) {}
 
 object Main {
+  val ID_DELIMITER = '!'
+  val ANSWER_DELIMITER = '-'
+  val REASONING_DELIMITER = '?'
+  val WANT_DELIMITER = '#'
+
   def main(args: Array[String]) = {
     if (args.length < 1) {
       val allargs: String = args.foldLeft("")((acc: String, curr: String) =>
@@ -22,11 +27,55 @@ object Main {
     else args(1)
 
     val outFileContents: String = Source.fromFile(infilename).getLines().foldLeft(new QuestionSegment("", Vector.empty, ""))(
-    (acc: QuestionSegment, line: String) =>
-      new QuestionSegment(acc.id, acc.answerChoices, acc.text + line + ".")).text
+    (acc: QuestionSegment, line: String) => {
+      if (line.length == 0)
+        new QuestionSegment(acc.id, acc.answerChoices, acc.text + "\n")
+      else if (line(0) == ID_DELIMITER) {
+        // then we need to update id, and add section header thingy
+        val lineInfo: (String, String) = parseIDLine(line)
+        new QuestionSegment(lineInfo._1, Vector.empty,
+          acc.text + stringToPanel(lineInfo._2))
+      }
+      else if (line(0) == ANSWER_DELIMITER) {
+        val answerText = line.slice(line.indexOf(" ") + 1, line.length)
+        new QuestionSegment(acc.id,
+          acc.answerChoices :+ answerText,
+          acc.text + stringToRadio(acc.id, answerText))
+      }
+      else if (line(0) == REASONING_DELIMITER) {
+        val sectionText = line.slice(line.indexOf(" ") + 1, line.length)
+        new QuestionSegment(acc.id, acc.answerChoices, acc.text + stringToForm(acc.id, sectionText))
+      }
+      else
+        new QuestionSegment(acc.id, acc.answerChoices, acc.text + line + ".")
+    }).text
 
     val writer = new PrintWriter(new File(outfilename))
     writer.write(outFileContents)
     writer.close()
+  }
+
+  def parseIDLine(l: String): (String, String) = {
+    val spaceIndex: Int = l.indexOf(" ")
+    (l.slice(1, spaceIndex), l.slice(spaceIndex + 1, l.length))
+  }
+
+  def stringToPanel(s: String): String = {
+    "<div class=\"panel panel-default\">\n" +
+      "<div class=\"panel-body\"><label>" + s + "</label>\n" +
+      "<pre>\n<code>\n\n</code>\n</pre>\n\n"
+  }
+
+  def stringToRadio(id: String, value: String): String = {
+    "<div class=\"radio\"><label><input name=\"" + id + "\" required=\"\" type=\"radio\"\n" +
+    "\tvalue=\"" + value + "\" />" + value + " </label></div>\n"
+  }
+
+  def stringToForm(id: String, title: String): String = {
+    val newId = id + "Reasoning"
+    "<div class=\"form-group\">\n" +
+    "\t<label for=\"" + newId + "\">" + title + "</label>\n" +
+    "\t<textarea class=\"form-control\" cols=\"250\" id=\"" + newId + "\"\n" +
+    "\tname=\"" + newId + "\" rows=\"6\" required=\"\"></textarea>\n</div>\n"
   }
 }
