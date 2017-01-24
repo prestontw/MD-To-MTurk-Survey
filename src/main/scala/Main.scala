@@ -102,7 +102,7 @@ object Main {
     "<div class=\"panel-body\" id=\"" + newId + "\">\n" +
     "\t<label>" + label + "</label>\n" +
     answerChoices.foldLeft("")((acc: String, curr:String) => {
-      "<div class=\"checkbox\"><label><input name=\"" + newId + "\" type=\"checkbox\"\n" +
+      acc + "<div class=\"checkbox\"><label><input name=\"" + newId + "\" type=\"checkbox\"\n" +
       "\tvalue=\"" + curr + "\" />" + curr + " </label></div>\n"
     }) + "</div><!-- end checkboxes -->\n"
   }
