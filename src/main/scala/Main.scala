@@ -71,23 +71,23 @@ object Main {
 
   def stringToPanel(s: String): String = {
     s"""<div class="panel panel-default">
-      <div class="panel-body"><label>$s </label>
-      <pre><code> </code></pre>\n\n"""
+      |<div class="panel-body"><label>$s </label>
+      |<pre><code> </code></pre>\n\n""".stripMargin
   }
   def endPanelBody(): String = "</div><!-- end panel body -->\n"
   def endPanel(): String = "</div><!-- end panel -->\n"
 
   def stringToRadio(id: String, value: String): String = {
-    "<div class=\"radio\"><label><input name=\"" + id + "\" required=\"\" type=\"radio\"\n" +
-    "\tvalue=\"" + value + "\" />" + value + " </label></div>\n"
+    s"""<div class="radio"><label><input name="$id" required="" type="radio"
+    |\tvalue="$value" />$value </label></div>\n""".stripMargin
   }
 
   def stringToForm(id: String, title: String): String = {
     val newId = id + "Reasoning"
-    "<div class=\"form-group\">\n" +
-    "\t<label for=\"" + newId + "\">" + title + "</label>\n" +
-    "\t<textarea class=\"form-control\" cols=\"250\" id=\"" + newId + "\"\n" +
-    "\tname=\"" + newId + "\" rows=\"6\" required=\"\"></textarea>\n</div>\n"
+    s"""<div class="form-group">
+    |\t<label for="$newId">$title </label>
+    |\t<textarea class="form-control" cols="250" id="$newId"
+    |\tname="$newId" rows="6" required=""></textarea>\n</div>\n""".stripMargin
   }
 
   def stringToWant(id: String, label: String): String = {
