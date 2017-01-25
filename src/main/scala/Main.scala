@@ -70,9 +70,9 @@ object Main {
   }
 
   def stringToPanel(s: String): String = {
-    "<div class=\"panel panel-default\">\n" +
-      "<div class=\"panel-body\"><label>" + s + "</label>\n" +
-      "<pre><code> </code></pre>\n\n"
+    s"""<div class="panel panel-default">
+      <div class="panel-body"><label>$s </label>
+      <pre><code> </code></pre>\n\n"""
   }
   def endPanelBody(): String = "</div><!-- end panel body -->\n"
   def endPanel(): String = "</div><!-- end panel -->\n"
