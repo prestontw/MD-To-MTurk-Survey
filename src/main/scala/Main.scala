@@ -12,6 +12,7 @@ object Main {
   val REASONING_DELIMITER = '?'
   val WANT_DELIMITER = '#'
   val CHECKBOX_DELIMITER = '.'
+  val IDEAL_REASONING_DELIMITER = '&'
 
   def main(args: Array[String]) = {
     if (args.length < 1) {
@@ -37,26 +38,28 @@ object Main {
         new QuestionSegment(lineInfo._1, Vector.empty,
           acc.text + stringToPanel(lineInfo._2))
       }
-      else if (line(0) == ANSWER_DELIMITER) {
-        val answerText = line.slice(line.indexOf(" ") + 1, line.length)
-        new QuestionSegment(acc.id,
-          acc.answerChoices :+ answerText,
-          acc.text + stringToRadio(acc.id, answerText))
+      else {
+        val text = line.slice(line.indexOf(" ") + 1, line.length)
+        if (line(0) == ANSWER_DELIMITER) {
+          new QuestionSegment(acc.id,
+            acc.answerChoices :+ text,
+            acc.text + stringToRadio(acc.id, text))
+        }
+        else if (line(0) == REASONING_DELIMITER) {
+          new QuestionSegment(acc.id, acc.answerChoices, acc.text + stringToForm(acc.id, text))
+        }
+        else if (line(0) == WANT_DELIMITER) {
+          new QuestionSegment(acc.id, acc.answerChoices, acc.text + endPanelBody() + stringToWant(acc.id, text))
+        }
+        else if (line(0) == CHECKBOX_DELIMITER) {
+          new QuestionSegment(acc.id, acc.answerChoices, acc.text + stringToCheckBoxes(acc.id, acc.answerChoices, text))
+        }
+        else if (line(0) == IDEAL_REASONING_DELIMITER) {
+          new QuestionSegment(acc.id, acc.answerChoices, acc.text + stringToIdealExplanation(acc.id, text) + endPanelBody() + endPanel())
+        }
+        else
+          new QuestionSegment(acc.id, acc.answerChoices, acc.text + line + ".")
       }
-      else if (line(0) == REASONING_DELIMITER) {
-        val sectionText = line.slice(line.indexOf(" ") + 1, line.length)
-        new QuestionSegment(acc.id, acc.answerChoices, acc.text + stringToForm(acc.id, sectionText))
-      }
-      else if (line(0) == WANT_DELIMITER) {
-        val sectionText = line.slice(line.indexOf(" ") + 1, line.length)
-        new QuestionSegment(acc.id, acc.answerChoices, acc.text + endPanelBody() + stringToWant(acc.id, sectionText))
-      }
-      else if (line(0) == CHECKBOX_DELIMITER) {
-        val sectionText = line.slice(line.indexOf(" ") + 1, line.length)
-        new QuestionSegment(acc.id, acc.answerChoices, acc.text + stringToCheckBoxes(acc.id, acc.answerChoices, sectionText))
-      }
-      else
-        new QuestionSegment(acc.id, acc.answerChoices, acc.text + line + ".")
     }).text
 
     val writer = new PrintWriter(new File(outfilename))
@@ -106,7 +109,7 @@ object Main {
     answerChoices.foldLeft("")((acc: String, curr:String) => {
       acc + s"""<div class="checkbox"><label><input name="$newId" type="checkbox"
       |\tvalue=\"$curr" />$curr </label></div>\n""".stripMargin
-    }) + "</div><!-- end checkboxes -->\n"
+    }) + "<!-- end checkboxes -->\n"
   }
 
   def stringToIdealExplanation(id: String, title: String): String = {
