@@ -79,7 +79,7 @@ object Main {
 
   def stringToRadio(id: String, value: String): String = {
     s"""<div class="radio"><label><input name="$id" required="" type="radio"
-    |\tvalue="$value" />$value </label></div>\n""".stripMargin
+    |\tvalue="$value" /><code>$value</code> </label></div>\n""".stripMargin
   }
 
   def stringToForm(id: String, title: String): String = {
@@ -100,11 +100,21 @@ object Main {
 
   def stringToCheckBoxes(id: String, answerChoices: Vector[String], label: String): String = {
     val newId = "Ideal" + id
+
     s"""<div class="panel-body" id="$newId">
     |\t<label>$label </label>\n""".stripMargin +
     answerChoices.foldLeft("")((acc: String, curr:String) => {
       acc + s"""<div class="checkbox"><label><input name="$newId" type="checkbox"
       |\tvalue=\"$curr" />$curr </label></div>\n""".stripMargin
     }) + "</div><!-- end checkboxes -->\n"
+  }
+
+  def stringToIdealExplanation(id: String, title: String): String = {
+    val newId = "Ideal" + id + "Reasoning"
+
+    s"""<div class="form-group">
+        |\t<label for="$newId">$title </label>
+        |\t<textarea class="form-control" cols="250" id="$newId"
+        |\tname="$newId" rows="6"></textarea>\n</div>""".stripMargin
   }
 }
