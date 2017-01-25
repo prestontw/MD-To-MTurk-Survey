@@ -100,11 +100,11 @@ object Main {
 
   def stringToCheckBoxes(id: String, answerChoices: Vector[String], label: String): String = {
     val newId = "Ideal" + id
-    "<div class=\"panel-body\" id=\"" + newId + "\">\n" +
-    "\t<label>" + label + "</label>\n" +
+    s"""<div class="panel-body" id="$newId">
+    |\t<label>$label </label>\n""".stripMargin +
     answerChoices.foldLeft("")((acc: String, curr:String) => {
-      acc + "<div class=\"checkbox\"><label><input name=\"" + newId + "\" type=\"checkbox\"\n" +
-      "\tvalue=\"" + curr + "\" />" + curr + " </label></div>\n"
+      acc + s"""<div class="checkbox"><label><input name="$newId" type="checkbox"
+      |\tvalue=\"$curr" />$curr </label></div>\n""".stripMargin
     }) + "</div><!-- end checkboxes -->\n"
   }
 }
