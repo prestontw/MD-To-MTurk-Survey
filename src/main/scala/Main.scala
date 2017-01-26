@@ -96,7 +96,7 @@ object Main {
   def stringToWant(id: String, label: String): String = {
     s"""<div class="panel-body">
     |\t<label>$label </label>
-    |\t<div class="checkbox"><label><input id="!!!" name="$id wants different" type="checkbox"
+    |\t<div class="checkbox"><label><input id="${id}ChkBox" name="$id wants different" type="checkbox"
     |\t\t/>Yes, I <i>want</i> it to produce something different.</label></div>
     |</div><!-- end wanting different -->\n""".stripMargin
   }
