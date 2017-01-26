@@ -108,7 +108,7 @@ object Main {
     |\t<label>$label </label>\n""".stripMargin +
     answerChoices.foldLeft("")((acc: String, curr:String) => {
       acc + s"""<div class="checkbox"><label><input name="$newId" type="checkbox"
-      |\tvalue=\"$curr" />$curr </label></div>\n""".stripMargin
+      |\tvalue=\"$curr" /><code>$curr</code> </label></div>\n""".stripMargin
     }) + "<!-- end checkboxes -->\n"
   }
 
