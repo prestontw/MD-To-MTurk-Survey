@@ -58,7 +58,7 @@ object Main {
           new QuestionSegment(acc.id, acc.answerChoices, acc.text + stringToIdealExplanation(acc.id, text) + endPanelBody() + endPanel())
         }
         else
-          new QuestionSegment(acc.id, acc.answerChoices, acc.text + line + ".")
+          new QuestionSegment(acc.id, acc.answerChoices, acc.text + line + "\n")
       }
     }).text
 
@@ -74,8 +74,7 @@ object Main {
 
   def stringToPanel(s: String): String = {
     s"""<div class="panel panel-default">
-      |<div class="panel-body"><label>$s </label>
-      |<pre><code> </code></pre>\n\n""".stripMargin
+      |<div class="panel-body"><label>$s </label>\n""".stripMargin
   }
   def endPanelBody(): String = "</div><!-- end panel body -->\n"
   def endPanel(): String = "</div><!-- end panel -->\n"

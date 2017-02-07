@@ -1,4 +1,7 @@
 !OneDivThree 1. What do you expect this program to outpu?
+<pre><code>func junk()
+    should be indented
+junk()</code></pre>
 - one answer
 - two answer
 - three answer
